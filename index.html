@@ -3,196 +3,329 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book a Tour | Dave's Garage Tours, Skippack PA</title>
+  <title>Dave's Garage Tours | Skippack, PA</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: "Arial Narrow", Arial, sans-serif;
-      background: #111;
-      color: #eee;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #000;
+      color: #ffe566;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding: 40px 20px;
+      padding: 20px;
     }
 
-    header {
-      text-align: center;
-      border-bottom: 4px solid #ff7a00;
-      padding-bottom: 20px;
-      margin-bottom: 30px;
+    .container {
+      background: #111;
+      border: 3px solid #ffe566;
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 550px;
       width: 100%;
-      max-width: 600px;
+      box-shadow: 0 0 25px rgba(255, 229, 102, 0.25);
     }
 
-    header h1 {
-      font-size: 2.4rem;
+    h1 {
+      text-align: center;
+      color: #ffe566;
+      font-size: 2em;
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: #fff;
-    }
-
-    header h1 span { color: #ff7a00; }
-
-    .details {
-      width: 100%;
-      max-width: 600px;
-      background: #1c1c1c;
-      border-left: 5px solid #ff7a00;
-      padding: 20px 25px;
-      margin-bottom: 30px;
-    }
-
-    .details h2 {
-      font-size: 1.2rem;
-      text-transform: uppercase;
-      color: #ff7a00;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
-    }
-
-    .details p {
       margin-bottom: 8px;
-      line-height: 1.5;
     }
 
-    .details strong { color: #fff; }
-
-    form {
-      width: 100%;
-      max-width: 600px;
-      background: #1c1c1c;
-      padding: 25px;
-      border: 1px solid #333;
+    .subtitle {
+      text-align: center;
+      color: #e10600;
+      font-weight: bold;
+      margin-bottom: 25px;
     }
 
-    form h2 {
-      font-size: 1.2rem;
-      text-transform: uppercase;
-      color: #fff;
+    .info {
+      text-align: center;
       margin-bottom: 20px;
-      letter-spacing: 1px;
+      line-height: 1.5;
+      color: #fff7c2;
+    }
+
+    .address {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ffe566;
+      font-weight: bold;
+    }
+
+    /* Yellow box for the price note */
+    .price-note {
+      background: #ffe566;
+      color: #000;
+      border-radius: 8px;
+      padding: 15px 18px;
+      margin-bottom: 25px;
+      text-align: center;
+      line-height: 1.5;
+      font-weight: bold;
+      box-shadow: 0 0 15px rgba(255, 229, 102, 0.3);
+    }
+
+    .row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .row .field {
+      flex: 1;
+    }
+
+    .field {
+      margin-bottom: 18px;
     }
 
     label {
       display: block;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      color: #bbb;
       margin-bottom: 6px;
-      letter-spacing: 0.5px;
+      font-weight: bold;
+      color: #ffe566;
+    }
+
+    .required::after {
+      content: " *";
+      color: #e10600;
     }
 
     input {
       width: 100%;
       padding: 12px;
-      margin-bottom: 18px;
-      background: #111;
-      border: 1px solid #444;
-      color: #fff;
-      font-size: 1rem;
+      border: 2px solid #333;
+      border-radius: 6px;
+      background: #1c1c1c;
+      color: #fff7c2;
+      font-size: 16px;
     }
 
     input:focus {
       outline: none;
-      border-color: #ff7a00;
+      border-color: #ffe566;
+      box-shadow: 0 0 8px rgba(255, 229, 102, 0.5);
     }
 
     button {
       width: 100%;
-      padding: 14px;
-      background: #ff7a00;
-      color: #111;
+      padding: 15px;
+      margin-top: 10px;
+      background: #ffe566;
+      color: #000;
       border: none;
-      font-size: 1.1rem;
+      border-radius: 6px;
+      font-size: 18px;
       font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 1px;
       cursor: pointer;
+      letter-spacing: 1px;
+      transition: background 0.2s;
     }
 
-    button:hover { background: #ff9833; }
+    button:hover {
+      background: #e10600;
+      color: #fff;
+    }
 
-    footer {
-      margin-top: 30px;
-      font-size: 0.85rem;
-      color: #777;
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .note {
       text-align: center;
+      font-size: 13px;
+      color: #aaa;
+      margin-top: 15px;
+    }
+
+    /* Message shown after submitting, before redirect */
+    .next-step {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 10;
+    }
+
+    .next-step.show {
+      display: flex;
+    }
+
+    .next-step-box {
+      background: #111;
+      border: 3px solid #ffe566;
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(255, 229, 102, 0.35);
+    }
+
+    .next-step-box h2 {
+      color: #ffe566;
+      font-size: 1.6em;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+
+    .next-step-box p {
+      color: #fff7c2;
+      line-height: 1.6;
+      font-size: 17px;
+    }
+
+    .next-step-box .highlight {
+      color: #e10600;
+      font-weight: bold;
+    }
+
+    @media (max-width: 500px) {
+      .row { flex-direction: column; gap: 0; }
+      .container { padding: 25px; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Dave's <span>Garage</span> Tours</h1>
-  </header>
+  <div class="container">
+    <h1>Dave's Garage Tours</h1>
+    <p class="subtitle">Skippack, PA</p>
+    <p class="info">Fill out the form below to reserve your spot on a tour of Dave's Garage.</p>
+    <p class="address">Location: Skippack, PA</p>
 
-  <section class="details">
-    <h2>Tour Details</h2>
-    <p><strong>Days:</strong> Monday &amp; Friday</p>
-    <p><strong>Time:</strong> 12:00 PM</p>
-    <p><strong>Address:</strong> Skippack, PA</p>
-  </section>
+    <div class="price-note">
+      Please note tours are $25 per person and you will be joining existing group tour.
+    </div>
 
-  <form id="tourForm">
-    <h2>Request Your Tour</h2>
+    <form id="tourForm">
+      <div class="row">
+        <div class="field">
+          <label for="firstName" class="required">First Name</label>
+          <input type="text" id="firstName" name="first_name" required>
+        </div>
+        <div class="field">
+          <label for="lastName" class="required">Last Name</label>
+          <input type="text" id="lastName" name="last_name" required>
+        </div>
+      </div>
 
-    <label for="name">Name *</label>
-    <input type="text" id="name" required>
+      <div class="field">
+        <label for="email" class="required">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
 
-    <label for="email">Email *</label>
-    <input type="email" id="email" required>
+      <div class="field">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone">
+      </div>
 
-    <label for="phone">Phone Number</label>
-    <input type="tel" id="phone">
+      <div class="field">
+        <label for="tickets">How many tickets are you interested in?</label>
+        <input type="number" id="tickets" name="tickets" min="1">
+      </div>
 
-    <label for="tickets">How many tickets are you interested in?</label>
-    <input type="text" id="tickets">
+      <div class="field">
+        <label for="carsLike">What cars do you like?</label>
+        <input type="text" id="carsLike" name="cars_like">
+      </div>
 
-    <button type="submit">Continue</button>
-  </form>
+      <div class="field">
+        <label for="carOwn">What cars do you own?</label>
+        <input type="text" id="carOwn" name="car_owned">
+      </div>
 
-  <footer>
-    Dave's Garage Tours &middot; Skippack, PA
-  </footer>
+      <button type="submit" id="submitBtn">Continue</button>
+    </form>
+
+    <p class="note">Your information is sent to Dave's Garage and used only to arrange your tour.</p>
+  </div>
+
+  <!-- Message shown after submitting -->
+  <div class="next-step" id="nextStep">
+    <div class="next-step-box">
+      <h2>Almost Done!</h2>
+      <p>Thanks for signing up. You're on the final step.</p>
+      <p>On the next page, hit the <span class="highlight">Submit</span> button to finish and lock in your spot.</p>
+    </div>
+  </div>
 
   <script>
-    const ACCESS_KEY = "e013644a-e6cb-4ba5-b381-48a2d7e63c1f";
-    const GOOGLE_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSfOYW1_uyZpRccr8vKghY6jqGnZaBHoMhRm6ys4707RNGDUNw/viewform";
+    // Replace with your Web3Forms access key (sends a copy of each submission to your email)
+    const WEB3FORMS_KEY = "e013644a-e6cb-4ba5-b381-48a2d7e63c1f";
 
-    document.getElementById("tourForm").addEventListener("submit", async (e) => {
+    // Your Google Form (the viewform link)
+    const GOOGLE_FORM_BASE = "https://docs.google.com/forms/d/e/1FAIpQLSfOYW1_uyZpRccr8vKghY6jqGnZaBHoMhRm6ys4707RNGDUNw/viewform";
+
+    // Replace each placeholder with the entry ID for that question in your Google Form
+    const ENTRY_IDS = {
+      firstName: "entry.2005620554",
+      lastName:  "entry.LAST_NAME_ID",
+      email:     "entry.1045781291",
+      phone:     "entry.1166974658",
+      tickets:   "entry.689761075",
+      carsLike:  "entry.CARS_LIKE_ID",
+      carOwned:  "entry.CAR_OWNED_ID"
+    };
+
+    document.getElementById("tourForm").addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const tickets = document.getElementById("tickets").value.trim();
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.textContent = "Sending...";
 
-      // Email a copy to you (runs in the background)
+      const data = {
+        first_name: document.getElementById("firstName").value.trim(),
+        last_name:  document.getElementById("lastName").value.trim(),
+        email:      document.getElementById("email").value.trim(),
+        phone:      document.getElementById("phone").value.trim(),
+        tickets:    document.getElementById("tickets").value.trim(),
+        cars_like:  document.getElementById("carsLike").value.trim(),
+        car_owned:  document.getElementById("carOwn").value.trim()
+      };
+
+      // 1. Email a copy of the submission to you
       try {
         await fetch("https://api.web3forms.com/submit", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body: JSON.stringify({
-            access_key: ACCESS_KEY,
-            subject: "New Dave's Garage Tour Request",
-            name, email, phone, tickets
+            access_key: WEB3FORMS_KEY,
+            subject: "New Dave's Garage Tour Submission",
+            ...data
           })
         });
       } catch (err) {
-        console.error("Email copy failed", err);
+        console.error("Email copy failed:", err);
       }
 
-      // Send the visitor to the Google Form with answers pre-filled
-      const params = new URLSearchParams({
-        "entry.2005620554": name,
-        "entry.1045781291": email,
-        "entry.1166974658": phone,
-        "entry.689761075": tickets
-      });
-      window.location.href = GOOGLE_FORM + "?" + params.toString();
+      // 2. Build the pre-filled Google Form link
+      const params = new URLSearchParams({ usp: "pp_url" });
+      const fieldMap = {
+        firstName: "first_name", lastName: "last_name", email: "email",
+        phone: "phone", tickets: "tickets", carsLike: "cars_like", carOwned: "car_owned"
+      };
+      for (const [key, entry] of Object.entries(ENTRY_IDS)) {
+        const value = data[fieldMap[key]];
+        if (value) params.append(entry, value);
+      }
+      const redirectUrl = GOOGLE_FORM_BASE + "?" + params.toString();
+
+      // 3. Show the "hit Submit on the next page" message, then redirect
+      document.getElementById("nextStep").classList.add("show");
+      setTimeout(() => {
+        window.location.href = redirectUrl;
+      }, 5000);
     });
   </script>
 

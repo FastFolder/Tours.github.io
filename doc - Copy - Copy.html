@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Tour | Dave's Garage Tours, Skippack PA</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Arial Narrow", Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      border-bottom: 4px solid #ff7a00;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+
+    header h1 span { color: #ff7a00; }
+
+    .details {
+      width: 100%;
+      max-width: 600px;
+      background: #1c1c1c;
+      border-left: 5px solid #ff7a00;
+      padding: 20px 25px;
+      margin-bottom: 30px;
+    }
+
+    .details h2 {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      color: #ff7a00;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .details p {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .details strong { color: #fff; }
+
+    form {
+      width: 100%;
+      max-width: 600px;
+      background: #1c1c1c;
+      padding: 25px;
+      border: 1px solid #333;
+    }
+
+    form h2 {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      color: #bbb;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      background: #111;
+      border: 1px solid #444;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #ff7a00;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #ff7a00;
+      color: #111;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+
+    button:hover { background: #ff9833; }
+
+    footer {
+      margin-top: 30px;
+      font-size: 0.85rem;
+      color: #777;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Dave's <span>Garage</span> Tours</h1>
+  </header>
+
+  <section class="details">
+    <h2>Tour Details</h2>
+    <p><strong>Days:</strong> Monday &amp; Friday</p>
+    <p><strong>Time:</strong> 12:00 PM</p>
+    <p><strong>Address:</strong> Skippack, PA</p>
+  </section>
+
+  <form id="tourForm">
+    <h2>Request Your Tour</h2>
+
+    <label for="name">Name *</label>
+    <input type="text" id="name" required>
+
+    <label for="email">Email *</label>
+    <input type="email" id="email" required>
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone">
+
+    <label for="tickets">How many tickets are you interested in?</label>
+    <input type="text" id="tickets">
+
+    <button type="submit">Continue</button>
+  </form>
+
+  <footer>
+    Dave's Garage Tours &middot; Skippack, PA
+  </footer>
+
+  <script>
+    const ACCESS_KEY = "e013644a-e6cb-4ba5-b381-48a2d7e63c1f";
+    const GOOGLE_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSfOYW1_uyZpRccr8vKghY6jqGnZaBHoMhRm6ys4707RNGDUNw/viewform";
+
+    document.getElementById("tourForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const tickets = document.getElementById("tickets").value.trim();
+
+      // Email a copy to you (runs in the background)
+      try {
+        await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            access_key: ACCESS_KEY,
+            subject: "New Dave's Garage Tour Request",
+            name, email, phone, tickets
+          })
+        });
+      } catch (err) {
+        console.error("Email copy failed", err);
+      }
+
+      // Send the visitor to the Google Form with answers pre-filled
+      const params = new URLSearchParams({
+        "entry.2005620554": name,
+        "entry.1045781291": email,
+        "entry.1166974658": phone,
+        "entry.689761075": tickets
+      });
+      window.location.href = GOOGLE_FORM + "?" + params.toString();
+    });
+  </script>
+
+</body>
+</html>
